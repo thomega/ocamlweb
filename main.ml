@@ -301,7 +301,7 @@ let copy src dst =
   let cin = open_in src
   and cout = open_out dst in
   try
-    while true do Pervasives.output_char cout (input_char cin) done
+    while true do Stdlib.output_char cout (input_char cin) done
   with End_of_file ->
     close_in cin; close_out cout
 
