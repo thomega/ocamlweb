@@ -20,7 +20,7 @@ UPDATETEX = $(MKTEXLSR) /usr/share/texmf /var/spool/texmf $(BASETEXDIR) > /dev/n
 # (requete de Ralf pour la Debian)
 MAJORVN=1
 MINORVN=41
-VERSION=$(MAJORVN).$(MINORVN)
+VERSION=$(MAJORVN).$(MINORVN)+thomega
 
 OCAMLBEST=@OCAMLBEST@
 
