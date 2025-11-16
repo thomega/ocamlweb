@@ -3,6 +3,12 @@
 		      LIST OF CHANGES
 		      ===============
 
+version 1.41+thomega, 16/11/2025
+=======================
+  o replaced deprecated functions, compiles without warning with
+    the LTS version 4.14.2, versions 5.x only suggest to remove
+    Printexc.catch from mail.ml
+
 version 1.41, 25/1/2019
 =======================
   o fixed compilation with OCaml 4.07 (getting rid of terminfo stuff
