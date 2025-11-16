@@ -124,14 +124,14 @@ let print ppf w =
   for i = 0 to String.length msg - 1 do
     if msg.[i] = '\n' then incr newlines;
   done;
-  let (out, flush, newline, space) =
-    Format.pp_get_all_formatter_output_functions ppf ()
+  let out_functions =
+    Format.pp_get_formatter_out_functions ppf ()
   in
-  let countnewline x = incr newlines; newline x in
-  Format.pp_set_all_formatter_output_functions ppf out flush countnewline space;
+  let countnewline x = incr newlines; out_functions.out_newline x in
+  Format.pp_set_formatter_out_functions ppf { out_functions with out_newline = countnewline };
   Format.fprintf ppf "%s" msg;
   Format.pp_print_flush ppf ();
-  Format.pp_set_all_formatter_output_functions ppf out flush newline space;
+  Format.pp_set_formatter_out_functions ppf out_functions;
   let (n, _) = translate (letter w) in
   if error.(n) then incr nerrors;
   !newlines

@@ -227,7 +227,7 @@ let find_where w =
     and then we use Caml's comparison.
  *)
 
-let norm_char c = match Char.uppercase c with
+let norm_char c = match Char.uppercase_ascii c with
   | '\192'..'\198' -> 'A'
   | '\199' -> 'C'
   | '\200'..'\203' -> 'E'
@@ -247,14 +247,17 @@ let norm_string s =
 
 let alpha_string s1 s2 =
   match what_is_first_char s1, what_is_first_char s2 with
-    | Symbol, Symbol -> s1 < s2
-    | Symbol, _ -> true
-    | _, Symbol -> false
-    | _,_ -> norm_string s1 < norm_string s2
+    | Symbol, Symbol -> compare s1 s2
+    | Symbol, _ -> -1
+    | _, Symbol -> 1
+    | _,_ -> compare (norm_string s1) (norm_string s2)
 
 let order_entry e1 e2 =
-  (alpha_string e1.e_name e2.e_name) ||
-  (e1.e_name = e2.e_name && e1.e_type < e2.e_type)
+  let c = alpha_string e1.e_name e2.e_name in
+  if c <> 0 then
+    c
+  else
+    compare e1.e_type e2.e_type
 
 (*s The following function collects all the index entries and sort them
     using [alpha_string], returning a list. *)
@@ -264,7 +267,7 @@ module Idset = Set.Make(struct type t = index_entry let compare = compare end)
 let all_entries () =
   let s = Idmap.fold (fun x _ s -> Idset.add x s) !used Idset.empty in
   let s = Idmap.fold (fun x _ s -> Idset.add x s) !defined s in
-  Sort.list order_entry (Idset.elements s)
+  List.sort order_entry (Idset.elements s)
 
 
 (*s When we are in \LaTeX\ style, an index entry only consists in two lists
@@ -324,7 +327,7 @@ let list_in_table id t =
   try
     let l = Whereset.elements (Idmap.find id t) in
     let l = map_succeed_nf find_where l in
-    let l = Sort.list (fun x x' -> snd x < snd x') l in
+    let l = List.sort (fun x x' -> compare (snd x) (snd x')) l in
     uniquize l
   with Not_found ->
     []

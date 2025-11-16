@@ -779,7 +779,7 @@ and in_string = parse
 
 type caml_file = { caml_filename : string; caml_module : string }
 
-let module_name f = String.capitalize (Filename.basename f)
+let module_name f = String.capitalize_ascii (Filename.basename f)
 
 let make_caml_file f =
   { caml_filename = f;
