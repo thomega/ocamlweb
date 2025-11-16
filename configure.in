@@ -1,7 +1,8 @@
 # autoconf input for ocamlweb
 
 # check for one particular file of the sources
-AC_INIT(web.mli)
+AC_INIT
+AC_CONFIG_SRCDIR([web.mli])
 
 # Check for Ocaml compilers
 
@@ -85,5 +86,6 @@ fi
 AC_SUBST(MKTEXLSR)
 
 # Finally create all the generated files
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
 chmod a-w Makefile
